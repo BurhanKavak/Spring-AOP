@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  spring-boot:
+    build: .
+    container_name: spring-aop
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_USER = burhan
+      - MYSQL_PASSWORD = password
+      - MYSQL_HOST=mysqldb
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=comment_db
+    depends_on:
+      - mysqldb
+    networks:
+      - comment
+  mysqldb:
+    image: mysql:8.0
+    restart: always
+    container_name: mysql-springaop
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: comment_db
+      MYSQL_USER: burhan
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - comment
+networks:
+  comment:
+    driver: bridge
